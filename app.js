@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const mongoose = require("mongoose");
 const ejs = require("ejs");
@@ -18,8 +19,9 @@ const userSchema = new mongoose.Schema({
       password: String
 });
 
-const secret = "Youcannotdecodeit,evenifyouwant";
-userSchema.plugin(encrypt, {secret: secret, encryptedFields: ["password"]});
+userSchema.plugin(encrypt, {secret: process.env.SECRET, encryptedFields: ["password"]});
+// This adds _ct and _ac fields to the schema, as well as pre 'init' and pre 'save' middleware,
+// and encrypt, decrypt, sign, and authenticate instance methods
 
 const User = new mongoose.model("User", userSchema);
   
