@@ -40,6 +40,31 @@ passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+//Sample Insertion of values
+// const article = [
+//       {
+//       title: "Bootstrap",
+//       content: "A CSS library developed by Twitter"
+//       },
+//       {
+//             title: "mongoose",
+//             content: "A npm module use to deal with CRUD operations of MongoDB"
+//       },
+//       {
+//             title: "material_UI",
+//             content: "A style libray used with React.JS"
+//       }
+// ];
+
+// Article.collection.insertMany(article, function(err) {
+//       if (err){ 
+//           return console.error(err);
+//       } else {
+//         console.log("Multiple documents inserted to Collection");
+//       }
+// });
+/////////////////////////
+
 app.get("/", function(req, res){
   res.render("home");
 });
@@ -91,10 +116,18 @@ app.post("/register", function(req, res){
 });
 
 app.post("/login", function(req, res){
-//   const username = req.body.username;
-//   const password = req.body.password;
 
-//   User.findOne({email: username}, function(err, foundUser){
+      // const enteredEmail = req.body.username;
+      // const enterPass = md5(req.body.password);
+      // User.findOne({email: enteredEmail}, function(err, found) {
+      //       if(err)
+      //             console.log(err);
+      //       else {
+      //             if(found.password === enterPass)
+      //                   res.render("secrets");
+      //       }
+      // })      
+      
   const user = new User({
     username: req.body.username,
     password: req.body.password
