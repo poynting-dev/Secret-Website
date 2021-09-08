@@ -14,3 +14,35 @@ body {
   color: #fff;
   background-color: #000;
 }
+
+/*  */
+
+.divider:after,
+.divider:before {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #eee;
+}
+.h-custom {
+  height: calc(100% - 80px);
+}
+@media (min-width: 450px) {
+  .h-custom {
+    margin-top: 1rem;
+    height: 10%;
+  }
+}
+
+/*  */
+
+.gradient-custom {
+  /* fallback for old browsers */
+  background: #c793ff;
+
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: -webkit-linear-gradient(to right, rgba(161, 87, 241, 0.521), rgba(37, 116, 252, 0.719));
+
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: linear-gradient(to right, rgba(143, 54, 238, 0.377), rgba(26, 15, 182, 0.712))
+}
