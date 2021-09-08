@@ -41,8 +41,15 @@ const User = new mongoose.model("User", userSchema);
 
 passport.use(User.createStrategy());
 
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+passport.serializeUser(function(user, done) {
+      done(null, user.id);
+    });
+    
+    passport.deserializeUser(function(id, done) {
+      User.findById(id, function(err, user) {
+        done(err, user);
+      });
+    });
 
 passport.use(new GoogleStrategy({
       clientID: process.env.CLIENT_ID,
@@ -106,11 +113,15 @@ app.get("/register", function(req, res){
 });
 
 app.get("/secrets", function(req, res){
-  if (req.isAuthenticated()){
-    res.render("secrets");
-  } else {
-    res.redirect("/login");
-  }
+      User.find({"secret": {$ne: null}}, function(err, foundUsers) {
+            if(err)
+                  console.log(err);
+            else {
+                  if(foundUsers) {
+                        res.render("secrets", {usersWithSecret: foundUsers});
+                  }
+            }
+      });
 });
 
 
@@ -120,7 +131,7 @@ app.get("/submit", function(req, res){
       } else {
         res.redirect("/login");
       }
-    });
+});
 
 app.get("/logout", function(req, res){
   req.logout();
@@ -192,7 +203,7 @@ app.post("/login", function(req, res){
 });
 
 app.post("/submit", function(req, res) {
-      const submimittedSecret = req.body.secret;
+      const submmittedSecret = req.body.secret;
       console.log(req.user); //Return all user information other than hash & salt.
 
       User.findById(req.user.id, function(err, foundUser) {
@@ -200,7 +211,7 @@ app.post("/submit", function(req, res) {
                   console.log(err);
             else {
                   if(foundUser) {
-                        foundUser.secret = submimittedSecret;
+                        foundUser.secret = submmittedSecret;
                         foundUser.save(function() {
                               res.redirect("/secrets");
                         });
